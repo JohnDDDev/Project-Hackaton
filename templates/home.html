@@ -17,7 +17,9 @@
       <button type="submit" id="join" name="join">Join</button>
     </div>
     <hr />
+    {% if Teacher %}
     <button type="submit" id="create" name="create">Create Room</button>
+    {% endif %}
   </form>
 </div>
 {% endblock %}

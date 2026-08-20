@@ -15,8 +15,12 @@ def generate_room_code(code,anothercode, existing_codes) -> str:
         if code not in existing_codes:
             return code
 
-@app.route('/', methods=["GET", "POST"])
-def home():
+@app.route('/')
+def index():
+        return redirect(url_for('home',Teacher=True))
+
+@app.route('/home/<Teacher>', methods=["GET", "POST"])
+def home(Teacher):
     session.clear()
     if request.method == "POST":
         name = request.form.get('name')
