@@ -21,25 +21,26 @@ def home():
     if request.method == "POST":
         name = request.form.get('name')
         create = request.form.get('create', False)
-        code = request.form.get('code')
+        subject = request.form.get('code')
         level = request.form.get('level')
-        print(code,level)
+        print(subject,level)
         join = request.form.get('join', False)
         if not name:
-            return render_template('home.html', error="Name is required", code=code)
+            return render_template('home.html', error="Name is required", code=subject)
         if create != False:
-            room_code = generate_room_code(code,level, list(rooms.keys()))
+            room_code = generate_room_code(subject,level, list(rooms.keys()))
             new_room = {
                 'members': 0,
                 'messages': []
             }
             rooms[room_code] = new_room
         if join != False:
-            if not code:
+            if not subject:
                 return render_template('home.html', error="Please enter a room code to enter a chat room", name=name)
-            if code not in rooms:
+            if (subject+level) not in rooms:
                 return render_template('home.html', error="Room code invalid", name=name)
-            room_code = code
+            print(subject,level)
+            room_code = subject + level
         session['room'] = room_code
         session['name'] = name
         return redirect(url_for('room'))
@@ -50,7 +51,7 @@ def home():
 def room():
     room = session.get('room')
     name = session.get('name')
-    if name is None or room is None or room not in rooms or rooms[room]["members"] >= 2:
+    if name is None or room is None or room not in rooms:
         return redirect(url_for('home'))
     messages = rooms[room]['messages']
     return render_template('room.html', room=room, user=name, messages=messages)
