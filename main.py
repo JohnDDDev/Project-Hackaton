@@ -17,7 +17,7 @@ def generate_room_code(code,anothercode, existing_codes) -> str:
 
 @app.route('/')
 def index():
-        return redirect(url_for('home',Teacher=True))
+        return redirect(url_for('home', Teacher='False'))
 
 @app.route('/home/<Teacher>', methods=["GET", "POST"])
 def home(Teacher):
@@ -49,7 +49,7 @@ def home(Teacher):
         session['name'] = name
         return redirect(url_for('room'))
     else:
-        return render_template('home.html')
+        return render_template('home.html',Teacher=Teacher)
 
 @app.route('/room')
 def room():
